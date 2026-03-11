@@ -5,9 +5,9 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                     http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
-    <entity name="PIM\Security\Domain\Model\User"
+    <entity name="App\Security\Domain\Model\User"
             table="users"
-            repository-class="PIM\Security\Infrastructure\Persistence\Doctrine\Repository\DoctrineUserRepository"
+            repository-class="App\Security\Infrastructure\Persistence\Doctrine\Repository\DoctrineUserRepository"
     >
         <id name="id" type="uuid">
             <generator strategy="NONE"/>
