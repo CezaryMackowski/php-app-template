@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Security\Infrastructure\Http\Controller;
 
-use Lexik\Bundle\JWTAuthenticationBundle\Security\Http\Authentication\AuthenticationSuccessHandler;
-use OpenApi\Attributes as OA;
 use App\Security\Application\Command\RegisterUserCommand;
 use App\Security\Domain\Exception\UserAlreadyExists;
 use App\Security\Domain\Repository\UserRepositoryInterface;
 use App\Security\Infrastructure\Http\Request\RegisterRequest;
+use Lexik\Bundle\JWTAuthenticationBundle\Security\Http\Authentication\AuthenticationSuccessHandler;
+use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;

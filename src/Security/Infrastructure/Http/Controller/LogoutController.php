@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Security\Infrastructure\Http\Controller;
 
-use Nelmio\ApiDocBundle\Attribute\Security;
-use OpenApi\Attributes as OA;
 use App\Security\Application\Command\LogoutCommand;
 use App\Security\Infrastructure\Http\Request\LogoutRequest;
+use Nelmio\ApiDocBundle\Attribute\Security;
+use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;

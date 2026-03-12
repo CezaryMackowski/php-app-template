@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Security\Application\Handler;
 
-use Gesdinet\JWTRefreshTokenBundle\Model\RefreshTokenManagerInterface;
 use App\Security\Application\Command\LogoutCommand;
+use Gesdinet\JWTRefreshTokenBundle\Model\RefreshTokenManagerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]

@@ -4,26 +4,35 @@ declare(strict_types=1);
 
 namespace App\Tests\Security\Integration\Command;
 
-use DateTimeImmutable;
 use App\Security\Application\Command\LogoutCommand;
 use App\Security\Application\Command\RegisterUserCommand;
 use App\Security\Application\Handler\LogoutHandler;
 use App\Security\Application\Handler\RegisterUserHandler;
 use App\Security\Domain\Exception\UserAlreadyExists;
-use App\Tests\Shared\Integration\IntegrationKernelTestCase;
+use App\Tests\Trait\GetServiceTrait;
+use DateTimeImmutable;
+use Doctrine\DBAL\Connection;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Uid\Uuid;
 
-final class SecurityCommandHandlersIntegrationTest extends IntegrationKernelTestCase
+final class SecurityCommandHandlersIntegrationTest extends KernelTestCase
 {
+    use GetServiceTrait;
+
     private RegisterUserHandler $registerUserHandler;
     private LogoutHandler $logoutHandler;
+    private Connection $connection;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->registerUserHandler = $this->container()->get(RegisterUserHandler::class);
-        $this->logoutHandler = $this->container()->get(LogoutHandler::class);
+        $this->registerUserHandler = self::getService(RegisterUserHandler::class);
+        $this->logoutHandler = self::getService(LogoutHandler::class);
+        $this->connection = self::getService(Connection::class);
+
+        $this->connection->executeStatement('DELETE FROM users');
+        $this->connection->executeStatement('DELETE FROM refresh_tokens');
     }
 
     public function testRegisterUserCreatesPersistedHashedUser(): void
@@ -37,7 +46,7 @@ final class SecurityCommandHandlersIntegrationTest extends IntegrationKernelTest
         ($this->registerUserHandler)($command);
 
         // Assert
-        $row = $this->connection()->fetchAssociative(
+        $row = $this->connection->fetchAssociative(
             'SELECT email, password FROM users WHERE email = :email',
             ['email' => mb_strtolower($email)],
         );
@@ -73,7 +82,7 @@ final class SecurityCommandHandlersIntegrationTest extends IntegrationKernelTest
     {
         // Arrange
         $refreshToken = 'refresh-token-to-delete';
-        $this->connection()->executeStatement(
+        $this->connection->executeStatement(
             'INSERT INTO refresh_tokens (refresh_token, username, valid) VALUES (:refreshToken, :username, :valid)',
             [
                 'refreshToken' => $refreshToken,
@@ -86,7 +95,7 @@ final class SecurityCommandHandlersIntegrationTest extends IntegrationKernelTest
         ($this->logoutHandler)(new LogoutCommand($refreshToken));
 
         // Assert
-        $remaining = (int) $this->connection()->fetchOne(
+        $remaining = (int) $this->connection->fetchOne(
             'SELECT COUNT(*) FROM refresh_tokens WHERE refresh_token = :refreshToken',
             ['refreshToken' => $refreshToken],
         );

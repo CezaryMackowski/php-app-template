@@ -9,7 +9,7 @@ help: # Show help for each of the Makefile recipes.
 
 #========== Project ==========#
 
-start: up composer create-db create-db-test migration-all fixtures generate-jwt-keys # Setup and start application
+start: up composer create-db create-db-test fixtures generate-jwt-keys # Setup and start application
 
 up: # Start project
 	${DOCKER_COMPOSE_CMD} up -d

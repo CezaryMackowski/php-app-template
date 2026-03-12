@@ -4,15 +4,21 @@ declare(strict_types=1);
 
 namespace App\DataFixtures;
 
+use App\Security\Domain\Model\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use App\Security\Domain\Model\User;
 use Psr\Clock\ClockInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Uid\Uuid;
 
 final class AppFixtures extends Fixture
 {
+    private array $users = [
+        ['email' => 'john.doe@example.com', 'password' => 'StrongPass123!', 'roles' => ['ROLE_USER']],
+        ['email' => 'jane.doe@example.com', 'password' => 'StrongPass123!', 'roles' => ['ROLE_USER']],
+        ['email' => 'admin@example.com', 'password' => 'AdminPass123!', 'roles' => ['ROLE_ADMIN']],
+    ];
+
     public function __construct(
         private readonly UserPasswordHasherInterface $passwordHasher,
         private readonly ClockInterface $clock,
