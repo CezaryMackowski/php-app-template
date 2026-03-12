@@ -28,7 +28,7 @@ COPY ./docker/fpm/dev/php-ini-overrides.ini $PHP_INI_DIR/conf.d/php.ini
 RUN pecl install xdebug-3.5.0 && \
     docker-php-ext-enable xdebug
 
-COPY --from=composer:2.8.5 /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2.9.5 /usr/bin/composer /usr/bin/composer
 COPY ./docker/fpm/dev/xdebug.ini $PHP_INI_DIR/conf.d/xdebug.ini
 
 RUN apt-get -y autoremove && apt-get -y autoclean
